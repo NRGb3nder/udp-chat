@@ -10,8 +10,7 @@ class ChatMessageReceiver(threading.Thread):
         self.lock = lock
 
     def run(self):
-        shutdown = False
-        while not shutdown:
+        while True:
             try:
                 self.lock.acquire()
                 while True:

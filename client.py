@@ -50,7 +50,7 @@ class ChatClient(threading.Thread):
         threading.Thread.__init__(self)
         os.system('clear')
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.connect()
+        self.bind()
         self.socket.setblocking(0)
 
         print('>> Client started')
@@ -65,7 +65,7 @@ class ChatClient(threading.Thread):
         self.receiver.start()
         self.sender.start()
 
-    def connect(self):
+    def bind(self):
         is_bind_success = False
         offset = 0
         while (offset < ChatClient.MAX_BIND_TRIES and not is_bind_success):

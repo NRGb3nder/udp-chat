@@ -6,6 +6,7 @@ import threading
 class ChatServer(threading.Thread):
     UDP_CONFIG = ("localhost", 4000)
     MSG_HANDSHAKE = '/::handshake::/'
+    MSG_SIGN = '/::msg::/'
     MSG_SIZE = 512
 
     def __init__(self):
@@ -27,7 +28,9 @@ class ChatServer(threading.Thread):
                 if addr not in self.clients:
                     self.clients.append(addr)
                 msg = msg.decode('utf-8')
-                if ChatServer.MSG_HANDSHAKE in msg:
+                if ChatServer.MSG_SIGN in msg:
+                    msg = msg.replace(ChatServer.MSG_SIGN, '')
+                elif ChatServer.MSG_HANDSHAKE in msg:
                     msg = msg.replace(ChatServer.MSG_HANDSHAKE, '')
                     msg = 'User ' + msg + ' has logged in!'
                 print(">> [{:02d}:{:02d}:{:02d}] {}".format(*(time.localtime()[3:6] + (msg,))))

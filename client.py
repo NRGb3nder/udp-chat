@@ -24,6 +24,7 @@ class ChatMessageReceiver(threading.Thread):
 
 class ChatMessageSender(threading.Thread):
     MSG_HANDSHAKE = '/::handshake::/'
+    MSG_SIGN = '/::msg::/'
 
     def __init__(self, socket, username):
         threading.Thread.__init__(self)
@@ -34,7 +35,7 @@ class ChatMessageSender(threading.Thread):
         self.socket.sendto(bytes(ChatMessageSender.MSG_HANDSHAKE + self.username,
             'utf-8'), ChatClient.UDP_SERVER_CONFIG)
         while True:
-            msg = self.username + ' says: ' + input('>> ')
+            msg = ChatMessageSender.MSG_SIGN + self.username + ' says: ' + input('>> ')
             if (msg):
                 self.socket.sendto(bytes(msg, 'utf-8'), ChatClient.UDP_SERVER_CONFIG)
                 time.sleep(0.5)

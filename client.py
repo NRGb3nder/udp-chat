@@ -4,10 +4,10 @@ import os
 import threading
 
 class ChatMessageReceiver(threading.Thread):
-    def __init__(self, lock, socket):
+    def __init__(self, socket):
         threading.Thread.__init__(self)
         self.socket = socket
-        self.lock = lock
+        self.lock = threading.Lock()
 
     def run(self):
         while True:
@@ -57,8 +57,7 @@ class ChatClient(threading.Thread):
         self.username = input('>> Username: ')
         print('>>')
 
-        self.threadLock = threading.Lock()
-        self.receiver = ChatMessageReceiver(self.threadLock, self.socket)
+        self.receiver = ChatMessageReceiver(self.socket)
         self.sender = ChatMessageSender(self.socket, self.username)
 
     def run(self):

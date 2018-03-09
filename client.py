@@ -49,19 +49,18 @@ class ChatClient(threading.Thread):
 
     def __init__(self):
         threading.Thread.__init__(self)
-        os.system('clear')
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.bind()
         self.socket.setblocking(0)
 
+    def run(self):
+        os.system('clear')
         print('>> Client started')
         self.username = input('>> Username: ')
         print('>>')
 
         self.receiver = ChatMessageReceiver(self.socket)
         self.sender = ChatMessageSender(self.socket, self.username)
-
-    def run(self):
         self.receiver.start()
         self.sender.start()
 
